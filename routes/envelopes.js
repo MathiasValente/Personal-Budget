@@ -1,5 +1,6 @@
 import express from 'express';
-import * as services from '../services/envelopes.js'
+import * as services from '../services/envelopes.js';
+import { validateRequiredFields } from '../middlewares/validateRequiredFields.js';
 
 const router = express.Router();
 
@@ -14,12 +15,18 @@ router.get('/:id', async (req, res) => {
     res.send(result);
 });
 
-router.post('/', express.json(), async (req, res) => {
-    const { user_id, name, budget } = req.body;
-    const result = await services.insertEnvelope(user_id, name, budget);
-    res.status(201).json({
-        message: 'Envelope Successfully Created',
-        result
+router.post('/',
+    express.json(),
+    validateRequiredFields('envelopes', ['id']),
+    async (req, res) => {
+
+        const fileds = Object.keys(req.body);
+        const values = Object.values(req.body);
+
+        const result = await services.insertEnvelope(fileds, values);
+        res.status(201).json({
+            message: 'Envelope Successfully Created',
+            result
     });
 });
 
