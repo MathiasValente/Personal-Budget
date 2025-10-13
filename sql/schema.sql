@@ -11,7 +11,7 @@ CREATE TABLE envelopes (
     id INT GENERATED ALWAYS AS IDENTITY,
     user_id INT,
     name TEXT NOT NULL,
-    budget REAL NOT NULL,
+    budget NUMERIC(12, 2) NOT NULL,
     CONSTRAINT pk_envelopes PRIMARY KEY (id),
     CONSTRAINT fk_envelopes_users FOREIGN KEY (user_id)
         REFERENCES users(id)
